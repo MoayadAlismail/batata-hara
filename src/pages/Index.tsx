@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect, useCallback } from 'react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -168,14 +167,14 @@ const Index = () => {
 
   if (gameState === 'setup') {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-fallguys-pink via-fallguys-cyan to-fallguys-yellow flex items-center justify-center p-4 font-handjet">
+      <div className="min-h-screen bg-gray-800 flex items-center justify-center p-4 font-handjet">
         <Card className="w-full max-w-md bg-gray-900/90 backdrop-blur-lg border-fallguys-purple/30 border-4 rounded-3xl">
           <CardHeader className="text-center">
             <CardTitle className="text-4xl font-black text-white flex items-center justify-center gap-3 drop-shadow-lg">
               <Apple className="text-fallguys-orange animate-bounce" size={48} />
               بطاطا حارة
             </CardTitle>
-            <p className="text-white/90 text-lg font-semibold">أضف من ٢ إلى ٨ لاعبين للبدء</p>
+            <p className="text-white/90 text-lg font-semibold">أضف من ١ إلى ٨ لاعبين للبدء</p>
           </CardHeader>
           <CardContent className="space-y-6">
             <div className="flex gap-3">
@@ -224,7 +223,7 @@ const Index = () => {
 
   if (gameState === 'finished') {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-fallguys-pink via-fallguys-cyan to-fallguys-yellow flex items-center justify-center p-4 font-handjet">
+      <div className="min-h-screen bg-gray-800 flex items-center justify-center p-4 font-handjet">
         <Card className="w-full max-w-md bg-gray-900/90 backdrop-blur-lg border-fallguys-purple/30 border-4 rounded-3xl text-center">
           <CardHeader>
             <CardTitle className="text-4xl font-black text-white flex items-center justify-center gap-3 drop-shadow-lg">
@@ -266,7 +265,7 @@ const Index = () => {
   const currentPlayer = players[currentPlayerIndex];
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-fallguys-pink via-fallguys-cyan to-fallguys-yellow p-4 font-handjet">
+    <div className="min-h-screen bg-gray-800 p-4 font-handjet">
       <div className="max-w-4xl mx-auto space-y-6">
         {/* Header */}
         <div className="text-center">
