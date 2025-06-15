@@ -1,3 +1,4 @@
+
 import type { Config } from "tailwindcss";
 
 export default {
@@ -18,6 +19,9 @@ export default {
 			}
 		},
 		extend: {
+			fontFamily: {
+				'handjet': ['Handjet', 'monospace'],
+			},
 			colors: {
 				border: 'hsl(var(--border))',
 				input: 'hsl(var(--input))',
@@ -61,6 +65,17 @@ export default {
 					'accent-foreground': 'hsl(var(--sidebar-accent-foreground))',
 					border: 'hsl(var(--sidebar-border))',
 					ring: 'hsl(var(--sidebar-ring))'
+				},
+				// Fall Guys inspired colors
+				fallguys: {
+					pink: '#FF6B9D',
+					cyan: '#4ECDC4',
+					yellow: '#FFE66D',
+					purple: '#9B59B6',
+					orange: '#FF8C42',
+					blue: '#3498DB',
+					green: '#2ECC71',
+					red: '#E74C3C'
 				}
 			},
 			borderRadius: {
