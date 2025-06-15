@@ -169,7 +169,7 @@ const Index = () => {
   if (gameState === 'setup') {
     return (
       <div className="min-h-screen bg-gradient-to-br from-fallguys-pink via-fallguys-cyan to-fallguys-yellow flex items-center justify-center p-4 font-handjet">
-        <Card className="w-full max-w-md bg-white/20 backdrop-blur-lg border-fallguys-purple/30 border-4 rounded-3xl">
+        <Card className="w-full max-w-md bg-gray-900/90 backdrop-blur-lg border-fallguys-purple/30 border-4 rounded-3xl">
           <CardHeader className="text-center">
             <CardTitle className="text-4xl font-black text-white flex items-center justify-center gap-3 drop-shadow-lg">
               <Apple className="text-fallguys-orange animate-bounce" size={48} />
@@ -184,7 +184,7 @@ const Index = () => {
                 value={newPlayerName}
                 onChange={(e) => setNewPlayerName(e.target.value)}
                 onKeyPress={(e) => e.key === 'Enter' && addPlayer()}
-                className="bg-white/30 border-fallguys-purple/50 border-2 text-white placeholder:text-white/70 text-lg font-bold rounded-xl"
+                className="bg-gray-800/80 border-fallguys-purple/50 border-2 text-white placeholder:text-white/70 text-lg font-bold rounded-xl"
               />
               <Button 
                 onClick={addPlayer} 
@@ -197,7 +197,7 @@ const Index = () => {
             
             <div className="space-y-3">
               {players.map((player) => (
-                <div key={player.id} className="flex items-center justify-between bg-white/30 p-4 rounded-xl border-2 border-fallguys-blue/30">
+                <div key={player.id} className="flex items-center justify-between bg-gray-800/80 p-4 rounded-xl border-2 border-fallguys-blue/30">
                   <span className="text-white font-bold text-lg">{player.name}</span>
                   <div className="flex gap-1">
                     {[...Array(3)].map((_, i) => (
@@ -225,7 +225,7 @@ const Index = () => {
   if (gameState === 'finished') {
     return (
       <div className="min-h-screen bg-gradient-to-br from-fallguys-pink via-fallguys-cyan to-fallguys-yellow flex items-center justify-center p-4 font-handjet">
-        <Card className="w-full max-w-md bg-white/20 backdrop-blur-lg border-fallguys-purple/30 border-4 rounded-3xl text-center">
+        <Card className="w-full max-w-md bg-gray-900/90 backdrop-blur-lg border-fallguys-purple/30 border-4 rounded-3xl text-center">
           <CardHeader>
             <CardTitle className="text-4xl font-black text-white flex items-center justify-center gap-3 drop-shadow-lg">
               <Trophy className="text-fallguys-yellow animate-bounce" size={48} />
@@ -241,7 +241,7 @@ const Index = () => {
             <div className="space-y-3">
               <h3 className="text-white font-bold text-xl">النتائج النهائية:</h3>
               {players.map((player) => (
-                <div key={player.id} className="flex items-center justify-between bg-white/30 p-3 rounded-xl border-2 border-fallguys-blue/30">
+                <div key={player.id} className="flex items-center justify-between bg-gray-800/80 p-3 rounded-xl border-2 border-fallguys-blue/30">
                   <span className={`font-bold text-lg ${player.isEliminated ? 'text-fallguys-red' : 'text-fallguys-green'}`}>
                     {player.name}
                   </span>
@@ -275,7 +275,7 @@ const Index = () => {
             بطاطا حارة
           </h1>
           <div className="text-white/90 text-xl font-bold">
-            ابحث عن كلمة تحتوي على: <span className="font-black text-fallguys-yellow text-3xl bg-white/20 px-4 py-2 rounded-xl border-2 border-white/30">{currentCombination}</span>
+            ابحث عن كلمة تحتوي على: <span className="font-black text-fallguys-yellow text-3xl bg-gray-900/80 px-4 py-2 rounded-xl border-2 border-white/30">{currentCombination}</span>
           </div>
         </div>
 
@@ -290,7 +290,7 @@ const Index = () => {
         </div>
 
         {/* Current Player */}
-        <Card className="bg-white/20 backdrop-blur-lg border-fallguys-purple/30 border-4 rounded-3xl">
+        <Card className="bg-gray-900/90 backdrop-blur-lg border-fallguys-purple/30 border-4 rounded-3xl">
           <CardHeader className="text-center">
             <CardTitle className="text-3xl text-white font-black">
               دور {currentPlayer.name}
@@ -303,7 +303,7 @@ const Index = () => {
                 value={currentWord}
                 onChange={(e) => setCurrentWord(e.target.value)}
                 onKeyPress={(e) => e.key === 'Enter' && handleWordSubmit()}
-                className="bg-white/30 border-fallguys-blue/50 border-2 text-white placeholder:text-white/70 text-xl font-bold rounded-xl"
+                className="bg-gray-800/80 border-fallguys-blue/50 border-2 text-white placeholder:text-white/70 text-xl font-bold rounded-xl"
                 autoFocus
               />
               <Button 
@@ -319,7 +319,7 @@ const Index = () => {
         {/* Players Status */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
           {players.map((player, index) => (
-            <Card key={player.id} className={`bg-white/20 backdrop-blur-lg border-4 rounded-2xl ${
+            <Card key={player.id} className={`bg-gray-900/90 backdrop-blur-lg border-4 rounded-2xl ${
               index === currentPlayerIndex ? 'border-fallguys-yellow shadow-lg shadow-fallguys-yellow/50' : 'border-fallguys-purple/30'
             } ${player.isEliminated ? 'opacity-50' : ''}`}>
               <CardContent className="p-4 text-center">
@@ -343,7 +343,7 @@ const Index = () => {
         </div>
 
         {/* Game Stats */}
-        <Card className="bg-white/20 backdrop-blur-lg border-fallguys-purple/30 border-4 rounded-2xl">
+        <Card className="bg-gray-900/90 backdrop-blur-lg border-fallguys-purple/30 border-4 rounded-2xl">
           <CardContent className="p-4">
             <div className="text-center text-white font-bold">
               <div className="text-lg">الكلمات المستخدمة: {usedWords.size}</div>
