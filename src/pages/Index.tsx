@@ -2,7 +2,7 @@ import React, { useState, useEffect, useCallback } from 'react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { bomb, Timer, Users, Trophy } from 'lucide-react';
+import { Bomb, Timer, Users, Trophy } from 'lucide-react';
 import { toast } from '@/hooks/use-toast';
 import Confetti from '@/components/Confetti';
 import '../styles/animations.css';
@@ -193,7 +193,7 @@ const Index = () => {
         <Card className="w-full max-w-md bg-gray-900/90 backdrop-blur-lg border-fallguys-purple/30 border-4 rounded-3xl">
           <CardHeader className="text-center">
             <CardTitle className="text-4xl font-black text-white flex items-center justify-center gap-3 drop-shadow-lg">
-              <bomb className="text-fallguys-orange animate-bounce" size={48} />
+              <Bomb className="text-fallguys-orange animate-bounce" size={48} />
               بطاطا حارة
             </CardTitle>
             <p className="text-white/90 text-lg font-semibold">أضف من ١ إلى ٨ لاعبين للبدء</p>
@@ -295,7 +295,7 @@ const Index = () => {
         {/* Header */}
         <div className="text-center">
           <h1 className="text-5xl font-black text-white mb-4 flex items-center justify-center gap-3 drop-shadow-lg">
-            <bomb className={`text-fallguys-orange ${timeLeft <= 3 ? 'bomb-tick-intense' : timeLeft <= 5 ? 'bomb-tick' : 'animate-bounce'}`} size={56} />
+            <Bomb className={`text-fallguys-orange ${timeLeft <= 3 ? 'bomb-tick-intense' : timeLeft <= 5 ? 'bomb-tick' : 'animate-bounce'}`} size={56} />
             بطاطا حارة
           </h1>
           <div className="text-white/90 text-xl font-bold">
