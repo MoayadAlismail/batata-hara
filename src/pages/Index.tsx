@@ -2,8 +2,10 @@ import React, { useState, useEffect, useCallback } from 'react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Apple, Timer, Users, Trophy } from 'lucide-react';
+import { bomb, Timer, Users, Trophy } from 'lucide-react';
 import { toast } from '@/hooks/use-toast';
+import Confetti from '@/components/Confetti';
+import '../styles/animations.css';
 
 interface Player {
   id: number;
@@ -42,6 +44,9 @@ const Index = () => {
   const [currentWord, setCurrentWord] = useState('');
   const [usedWords, setUsedWords] = useState<Set<string>>(new Set());
   const [newPlayerName, setNewPlayerName] = useState('');
+  const [showConfetti, setShowConfetti] = useState(false);
+  const [wordFeedback, setWordFeedback] = useState<'success' | 'error' | null>(null);
+  const [eliminatedPlayerId, setEliminatedPlayerId] = useState<number | null>(null);
 
   const generateNewCombination = useCallback(() => {
     const randomIndex = Math.floor(Math.random() * TWO_LETTER_COMBINATIONS.length);
@@ -90,18 +95,26 @@ const Index = () => {
     
     if (isValidWord(word, currentCombination)) {
       setUsedWords(prev => new Set([...prev, word]));
+      setWordFeedback('success');
       toast({
         title: "كلمة صحيحة!",
         description: `${currentPlayer.name} كتب: ${word}`,
       });
       nextTurn();
+      
+      // Clear feedback after animation
+      setTimeout(() => setWordFeedback(null), 600);
     } else {
+      setWordFeedback('error');
       loseLife();
       toast({
         title: "كلمة خاطئة!",
         description: `${word} غير صحيحة أو مستخدمة من قبل`,
         variant: "destructive",
       });
+      
+      // Clear feedback after animation
+      setTimeout(() => setWordFeedback(null), 500);
     }
     setCurrentWord('');
   };
@@ -111,11 +124,16 @@ const Index = () => {
       if (index === currentPlayerIndex) {
         const newLives = player.lives - 1;
         if (newLives <= 0) {
+          setEliminatedPlayerId(player.id);
           toast({
             title: "تم إقصاء اللاعب!",
             description: `${player.name} خرج من اللعبة`,
             variant: "destructive",
           });
+          
+          // Clear elimination animation after it completes
+          setTimeout(() => setEliminatedPlayerId(null), 800);
+          
           return { ...player, lives: 0, isEliminated: true };
         }
         return { ...player, lives: newLives };
@@ -129,6 +147,7 @@ const Index = () => {
     const activePlayers = players.filter(p => !p.isEliminated);
     if (activePlayers.length <= 1) {
       setGameState('finished');
+      setShowConfetti(true);
       return;
     }
     
@@ -160,6 +179,9 @@ const Index = () => {
     setTimeLeft(10);
     setCurrentWord('');
     setUsedWords(new Set());
+    setShowConfetti(false);
+    setWordFeedback(null);
+    setEliminatedPlayerId(null);
   };
 
   const winner = players.find(p => !p.isEliminated);
@@ -171,7 +193,7 @@ const Index = () => {
         <Card className="w-full max-w-md bg-gray-900/90 backdrop-blur-lg border-fallguys-purple/30 border-4 rounded-3xl">
           <CardHeader className="text-center">
             <CardTitle className="text-4xl font-black text-white flex items-center justify-center gap-3 drop-shadow-lg">
-              <Apple className="text-fallguys-orange animate-bounce" size={48} />
+              <bomb className="text-fallguys-orange animate-bounce" size={48} />
               بطاطا حارة
             </CardTitle>
             <p className="text-white/90 text-lg font-semibold">أضف من ١ إلى ٨ لاعبين للبدء</p>
@@ -223,42 +245,45 @@ const Index = () => {
 
   if (gameState === 'finished') {
     return (
-      <div className="min-h-screen bg-gray-800 flex items-center justify-center p-4 font-handjet">
-        <Card className="w-full max-w-md bg-gray-900/90 backdrop-blur-lg border-fallguys-purple/30 border-4 rounded-3xl text-center">
-          <CardHeader>
-            <CardTitle className="text-4xl font-black text-white flex items-center justify-center gap-3 drop-shadow-lg">
-              <Trophy className="text-fallguys-yellow animate-bounce" size={48} />
-              انتهت اللعبة!
-            </CardTitle>
-          </CardHeader>
-          <CardContent className="space-y-6">
-            {winner && (
-              <div className="text-3xl font-black text-fallguys-yellow drop-shadow-lg">
-                🎉 {winner.name} الفائز! 🎉
-              </div>
-            )}
-            <div className="space-y-3">
-              <h3 className="text-white font-bold text-xl">النتائج النهائية:</h3>
-              {players.map((player) => (
-                <div key={player.id} className="flex items-center justify-between bg-gray-800/80 p-3 rounded-xl border-2 border-fallguys-blue/30">
-                  <span className={`font-bold text-lg ${player.isEliminated ? 'text-fallguys-red' : 'text-fallguys-green'}`}>
-                    {player.name}
-                  </span>
-                  <span className="text-white font-bold">
-                    {player.isEliminated ? 'مقصى' : `${player.lives} أرواح`}
-                  </span>
+      <>
+        <Confetti active={showConfetti} onComplete={() => setShowConfetti(false)} />
+        <div className="min-h-screen bg-gray-800 flex items-center justify-center p-4 font-handjet">
+          <Card className="w-full max-w-md bg-gray-900/90 backdrop-blur-lg border-fallguys-purple/30 border-4 rounded-3xl text-center">
+            <CardHeader>
+              <CardTitle className="text-4xl font-black text-white flex items-center justify-center gap-3 drop-shadow-lg">
+                <Trophy className="text-fallguys-yellow animate-bounce" size={48} />
+                انتهت اللعبة!
+              </CardTitle>
+            </CardHeader>
+            <CardContent className="space-y-6">
+              {winner && (
+                <div className="text-3xl font-black text-fallguys-yellow drop-shadow-lg">
+                  🎉 {winner.name} الفائز! 🎉
                 </div>
-              ))}
-            </div>
-            <Button 
-              onClick={resetGame} 
-              className="w-full bg-fallguys-green hover:bg-fallguys-green/80 text-white font-bold text-xl py-4 rounded-xl border-2 border-white/30"
-            >
-              العب مرة أخرى
-            </Button>
-          </CardContent>
-        </Card>
-      </div>
+              )}
+              <div className="space-y-3">
+                <h3 className="text-white font-bold text-xl">النتائج النهائية:</h3>
+                {players.map((player) => (
+                  <div key={player.id} className="flex items-center justify-between bg-gray-800/80 p-3 rounded-xl border-2 border-fallguys-blue/30">
+                    <span className={`font-bold text-lg ${player.isEliminated ? 'text-fallguys-red' : 'text-fallguys-green'}`}>
+                      {player.name}
+                    </span>
+                    <span className="text-white font-bold">
+                      {player.isEliminated ? 'مقصى' : `${player.lives} أرواح`}
+                    </span>
+                  </div>
+                ))}
+              </div>
+              <Button 
+                onClick={resetGame} 
+                className="w-full bg-fallguys-green hover:bg-fallguys-green/80 text-white font-bold text-xl py-4 rounded-xl border-2 border-white/30"
+              >
+                العب مرة أخرى
+              </Button>
+            </CardContent>
+          </Card>
+        </div>
+      </>
     );
   }
 
@@ -270,7 +295,7 @@ const Index = () => {
         {/* Header */}
         <div className="text-center">
           <h1 className="text-5xl font-black text-white mb-4 flex items-center justify-center gap-3 drop-shadow-lg">
-            <Apple className="text-fallguys-orange animate-bounce" size={56} />
+            <bomb className={`text-fallguys-orange ${timeLeft <= 3 ? 'bomb-tick-intense' : timeLeft <= 5 ? 'bomb-tick' : 'animate-bounce'}`} size={56} />
             بطاطا حارة
           </h1>
           <div className="text-white/90 text-xl font-bold">
@@ -302,7 +327,9 @@ const Index = () => {
                 value={currentWord}
                 onChange={(e) => setCurrentWord(e.target.value)}
                 onKeyPress={(e) => e.key === 'Enter' && handleWordSubmit()}
-                className="bg-gray-800/80 border-fallguys-blue/50 border-2 text-white placeholder:text-white/70 text-xl font-bold rounded-xl"
+                className={`bg-gray-800/80 border-fallguys-blue/50 border-2 text-white placeholder:text-white/70 text-xl font-bold rounded-xl ${
+                  wordFeedback === 'success' ? 'word-success' : wordFeedback === 'error' ? 'word-error' : ''
+                }`}
                 autoFocus
               />
               <Button 
@@ -320,15 +347,17 @@ const Index = () => {
           {players.map((player, index) => (
             <Card key={player.id} className={`bg-gray-900/90 backdrop-blur-lg border-4 rounded-2xl ${
               index === currentPlayerIndex ? 'border-fallguys-yellow shadow-lg shadow-fallguys-yellow/50' : 'border-fallguys-purple/30'
-            } ${player.isEliminated ? 'opacity-50' : ''}`}>
+            } ${player.isEliminated ? 'opacity-50' : ''} ${
+              eliminatedPlayerId === player.id ? 'player-eliminate' : ''
+            }`}>
               <CardContent className="p-4 text-center">
                 <div className="text-white font-bold mb-3 text-lg">{player.name}</div>
                 <div className="flex justify-center gap-2 mb-3">
                   {[...Array(3)].map((_, i) => (
                     <div
                       key={i}
-                      className={`w-4 h-4 rounded-full border-2 border-white/50 ${
-                        i < player.lives ? 'bg-fallguys-red' : 'bg-gray-600'
+                      className={`w-4 h-4 rounded-full border-2 border-white/50 transition-all duration-300 ${
+                        i < player.lives ? 'bg-fallguys-red scale-100' : 'bg-gray-600 scale-75'
                       }`}
                     ></div>
                   ))}
