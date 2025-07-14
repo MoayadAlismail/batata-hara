@@ -2,8 +2,9 @@ import React, { useState, useEffect, useCallback } from 'react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Bomb, Timer, Users, Trophy } from 'lucide-react';
+import { Bomb, Timer, Users, Trophy, ArrowLeft } from 'lucide-react';
 import { toast } from '@/hooks/use-toast';
+import { useNavigate } from 'react-router-dom';
 import Confetti from '@/components/Confetti';
 import '../styles/animations.css';
 
@@ -36,6 +37,7 @@ const TWO_LETTER_COMBINATIONS = [
 ];
 
 const Index = () => {
+  const navigate = useNavigate();
   const [gameState, setGameState] = useState<'setup' | 'playing' | 'finished'>('setup');
   const [players, setPlayers] = useState<Player[]>([]);
   const [currentPlayerIndex, setCurrentPlayerIndex] = useState(0);
@@ -197,6 +199,16 @@ const Index = () => {
               بطاطا حارة
             </CardTitle>
             <p className="text-white/90 text-lg font-semibold">أضف من ١ إلى ٨ لاعبين للبدء</p>
+            <div className="mt-4">
+              <Button 
+                onClick={() => navigate('/')}
+                variant="ghost"
+                className="text-white/80 hover:text-white hover:bg-gray-800/50"
+              >
+                <ArrowLeft className="ml-2 h-4 w-4" />
+                عودة للقائمة الرئيسية
+              </Button>
+            </div>
           </CardHeader>
           <CardContent className="space-y-6">
             <div className="flex gap-3">
