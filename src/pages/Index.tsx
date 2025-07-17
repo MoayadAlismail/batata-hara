@@ -15,18 +15,6 @@ interface Player {
   isEliminated: boolean;
 }
 
-const ARABIC_WORDS = [
-  'كتاب', 'بيت', 'مدرسة', 'طعام', 'ماء', 'شمس', 'قمر', 'نجم', 'أرض', 'سماء',
-  'بحر', 'جبل', 'شجرة', 'وردة', 'طفل', 'أم', 'أب', 'أخ', 'أخت', 'جد',
-  'جدة', 'عم', 'عمة', 'خال', 'خالة', 'صديق', 'مدرس', 'طبيب', 'مهندس', 'فنان',
-  'كاتب', 'طالب', 'عامل', 'تاجر', 'سائق', 'طباخ', 'خباز', 'بائع', 'موظف', 'رجل',
-  'امرأة', 'ولد', 'بنت', 'حديقة', 'مكتبة', 'مستشفى', 'دكان', 'سوق', 'شارع', 'طريق',
-  'سيارة', 'باص', 'قطار', 'طائرة', 'سفينة', 'دراجة', 'حصان', 'كلب', 'قطة', 'أسد',
-  'فيل', 'زرافة', 'طائر', 'سمك', 'فراشة', 'نحلة', 'عنكبوت', 'ثعبان', 'ضفدع', 'أرنب',
-  'خروف', 'بقرة', 'جمل', 'حمار', 'ديك', 'دجاجة', 'بطة', 'إوزة', 'تفاح', 'موز',
-  'برتقال', 'عنب', 'فراولة', 'أناناس', 'مانجو', 'خوخ', 'كمثرى', 'بطيخ', 'شمام', 'جزر',
-  'بصل', 'ثوم', 'طماطم', 'خيار', 'خس', 'ملفوف', 'فلفل', 'باذنجان', 'بطاطس', 'ذرة'
-];
 
 const TWO_LETTER_COMBINATIONS = [
   'بر', 'تر', 'در', 'كر', 'مر', 'نر', 'هر', 'ير', 'لر', 'سر',
@@ -49,6 +37,26 @@ const Index = () => {
   const [showConfetti, setShowConfetti] = useState(false);
   const [wordFeedback, setWordFeedback] = useState<'success' | 'error' | null>(null);
   const [eliminatedPlayerId, setEliminatedPlayerId] = useState<number | null>(null);
+  const [arabicWords, setArabicWords] = useState<Set<string>>(new Set());
+
+
+  const normalizeArabic = (word: string): string => {
+  return word
+    .replace(/[إأآ]/g, 'ا')
+    .replace(/ة/g, 'ه')
+    .replace(/ى/g, 'ي')
+    .replace(/[\u064B-\u0652]/g, '') // harakat (diacritics)
+    .trim();
+};
+
+  useEffect(() => {
+    fetch('/public/word_data/arabic-words.txt')
+      .then(res => res.text())
+      .then(text => {
+        const words = text.split('\n').map(w => normalizeArabic(w.trim()));
+        setArabicWords(new Set(words));
+      });
+  }, []);
 
   const generateNewCombination = useCallback(() => {
     const randomIndex = Math.floor(Math.random() * TWO_LETTER_COMBINATIONS.length);
@@ -56,11 +64,13 @@ const Index = () => {
   }, []);
 
   const isValidWord = useCallback((word: string, combination: string) => {
-    if (word.length < 3) return false;
-    if (usedWords.has(word)) return false;
-    if (!word.includes(combination)) return false;
-    return ARABIC_WORDS.includes(word);
-  }, [usedWords]);
+    const normalizedWord = normalizeArabic(word);
+
+    if (!normalizedWord.includes(normalizeArabic(combination))) return false;
+    if (!arabicWords.has(normalizedWord)) return false;
+
+    return true;
+  }, [arabicWords]);
 
   const addPlayer = () => {
     if (newPlayerName.trim() && players.length < 8) {
