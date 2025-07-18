@@ -124,7 +124,7 @@ const MultiplayerGame = () => {
 
   if (!gameState.pin) {
     return (
-      <div className="min-h-screen bg-gray-800 flex items-center justify-center p-4 font-handjet">
+      <div className="min-h-screen bg-gray-800 flex items-center justify-center p-4 font-arabic">
         <Card className="w-full max-w-md bg-gray-900/90 backdrop-blur-lg border-fallguys-red/30 border-4 rounded-3xl">
           <CardContent className="p-8 text-center">
             <div className="text-white text-xl mb-4">لا توجد غرفة نشطة</div>
@@ -143,7 +143,7 @@ const MultiplayerGame = () => {
   // Setup phase
   if (gameState.gameState === 'setup') {
     return (
-      <div className="min-h-screen bg-gray-800 flex items-center justify-center p-4 font-handjet">
+      <div className="min-h-screen bg-gray-800 flex items-center justify-center p-4 font-arabic">
         <Card className="w-full max-w-md bg-gray-900/90 backdrop-blur-lg border-fallguys-purple/30 border-4 rounded-3xl">
           <CardHeader className="text-center">
             <CardTitle className="text-4xl font-black text-white flex items-center justify-center gap-3 drop-shadow-lg">
@@ -246,7 +246,7 @@ const MultiplayerGame = () => {
     return (
       <>
         <Confetti active={showConfetti} onComplete={() => setShowConfetti(false)} />
-        <div className="min-h-screen bg-gray-800 flex items-center justify-center p-4 font-handjet">
+        <div className="min-h-screen bg-gray-800 flex items-center justify-center p-4 font-arabic">
           <Card className="w-full max-w-md bg-gray-900/90 backdrop-blur-lg border-fallguys-purple/30 border-4 rounded-3xl text-center">
             <CardHeader>
               <CardTitle className="text-4xl font-black text-white flex items-center justify-center gap-3 drop-shadow-lg">
@@ -305,7 +305,7 @@ const MultiplayerGame = () => {
   const isMyTurn = currentPlayer?.socketId === socket?.id;
 
   return (
-    <div className="min-h-screen bg-gray-800 p-4 font-handjet">
+    <div className="min-h-screen bg-gray-800 p-4 font-arabic">
       <div className="max-w-4xl mx-auto space-y-6">
         {/* Header */}
         <div className="text-center">

@@ -20,7 +20,8 @@ export default {
 		},
 		extend: {
 			fontFamily: {
-				'handjet': ['Handjet', 'monospace'],
+				'sans': ['IBM Plex Sans Arabic', 'sans-serif'],
+				'arabic': ['IBM Plex Sans Arabic', 'sans-serif'],
 			},
 			colors: {
 				border: 'hsl(var(--border))',

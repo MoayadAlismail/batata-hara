@@ -6,6 +6,7 @@ import { Bomb, Timer, Users, Trophy, ArrowLeft } from 'lucide-react';
 import { toast } from '@/hooks/use-toast';
 import { useNavigate } from 'react-router-dom';
 import Confetti from '@/components/Confetti';
+import { ARABIC_WORDS_SET } from '@/data/arabicDictionary';
 import '../styles/animations.css';
 
 interface Player {
@@ -15,18 +16,7 @@ interface Player {
   isEliminated: boolean;
 }
 
-const ARABIC_WORDS = [
-  'كتاب', 'بيت', 'مدرسة', 'طعام', 'ماء', 'شمس', 'قمر', 'نجم', 'أرض', 'سماء',
-  'بحر', 'جبل', 'شجرة', 'وردة', 'طفل', 'أم', 'أب', 'أخ', 'أخت', 'جد',
-  'جدة', 'عم', 'عمة', 'خال', 'خالة', 'صديق', 'مدرس', 'طبيب', 'مهندس', 'فنان',
-  'كاتب', 'طالب', 'عامل', 'تاجر', 'سائق', 'طباخ', 'خباز', 'بائع', 'موظف', 'رجل',
-  'امرأة', 'ولد', 'بنت', 'حديقة', 'مكتبة', 'مستشفى', 'دكان', 'سوق', 'شارع', 'طريق',
-  'سيارة', 'باص', 'قطار', 'طائرة', 'سفينة', 'دراجة', 'حصان', 'كلب', 'قطة', 'أسد',
-  'فيل', 'زرافة', 'طائر', 'سمك', 'فراشة', 'نحلة', 'عنكبوت', 'ثعبان', 'ضفدع', 'أرنب',
-  'خروف', 'بقرة', 'جمل', 'حمار', 'ديك', 'دجاجة', 'بطة', 'إوزة', 'تفاح', 'موز',
-  'برتقال', 'عنب', 'فراولة', 'أناناس', 'مانجو', 'خوخ', 'كمثرى', 'بطيخ', 'شمام', 'جزر',
-  'بصل', 'ثوم', 'طماطم', 'خيار', 'خس', 'ملفوف', 'فلفل', 'باذنجان', 'بطاطس', 'ذرة'
-];
+
 
 const TWO_LETTER_COMBINATIONS = [
   'بر', 'تر', 'در', 'كر', 'مر', 'نر', 'هر', 'ير', 'لر', 'سر',
@@ -59,7 +49,7 @@ const Index = () => {
     if (word.length < 3) return false;
     if (usedWords.has(word)) return false;
     if (!word.includes(combination)) return false;
-    return ARABIC_WORDS.includes(word);
+    return ARABIC_WORDS_SET.has(word);
   }, [usedWords]);
 
   const addPlayer = () => {
@@ -191,7 +181,7 @@ const Index = () => {
 
   if (gameState === 'setup') {
     return (
-      <div className="min-h-screen bg-gray-800 flex items-center justify-center p-4 font-handjet">
+      <div className="min-h-screen bg-gray-800 flex items-center justify-center p-4 font-arabic">
         <Card className="w-full max-w-md bg-gray-900/90 backdrop-blur-lg border-fallguys-purple/30 border-4 rounded-3xl">
           <CardHeader className="text-center">
             <CardTitle className="text-4xl font-black text-white flex items-center justify-center gap-3 drop-shadow-lg">
@@ -259,7 +249,7 @@ const Index = () => {
     return (
       <>
         <Confetti active={showConfetti} onComplete={() => setShowConfetti(false)} />
-        <div className="min-h-screen bg-gray-800 flex items-center justify-center p-4 font-handjet">
+        <div className="min-h-screen bg-gray-800 flex items-center justify-center p-4 font-arabic">
           <Card className="w-full max-w-md bg-gray-900/90 backdrop-blur-lg border-fallguys-purple/30 border-4 rounded-3xl text-center">
             <CardHeader>
               <CardTitle className="text-4xl font-black text-white flex items-center justify-center gap-3 drop-shadow-lg">
@@ -302,7 +292,7 @@ const Index = () => {
   const currentPlayer = players[currentPlayerIndex];
 
   return (
-    <div className="min-h-screen bg-gray-800 p-4 font-handjet">
+    <div className="min-h-screen bg-gray-800 p-4 font-arabic">
       <div className="max-w-4xl mx-auto space-y-6">
         {/* Header */}
         <div className="text-center">

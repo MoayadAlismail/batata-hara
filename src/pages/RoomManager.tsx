@@ -99,7 +99,7 @@ const RoomManager = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gray-800 flex items-center justify-center p-4 font-handjet">
+    <div className="min-h-screen bg-gray-800 flex items-center justify-center p-4 font-arabic">
       <Card className="w-full max-w-md bg-gray-900/90 backdrop-blur-lg border-fallguys-purple/30 border-4 rounded-3xl">
         <CardHeader className="text-center">
           <CardTitle className="text-4xl font-black text-white flex items-center justify-center gap-3 drop-shadow-lg">
