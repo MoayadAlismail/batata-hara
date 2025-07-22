@@ -497,14 +497,14 @@ function generateCombination() {
 
 function isValidWord(word, combination, usedWords) {
   if (word.length < 3) return false;
-  if (usedWords.has(word)) return false;
+  //if (usedWords.has(word)) return false;
   if (!word.includes(combination)) return false;
   return ARABIC_WORDS_SET.has(word);
 }
 
 function getWordRejectionReason(word, combination, usedWords) {
   if (word.length < 3) return 'Word too short (minimum 3 letters)';
-  if (usedWords.has(word)) return 'Word already used';
+  //if (usedWords.has(word)) return 'Word already used';
   if (!word.includes(combination)) return `Word must contain "${combination}"`;
   if (!ARABIC_WORDS_SET.has(word)) return 'Word not in dictionary';
   return 'Invalid word';

@@ -16,8 +16,6 @@ interface Player {
   isEliminated: boolean;
 }
 
-
-
 const TWO_LETTER_COMBINATIONS = [
   'بر', 'تر', 'در', 'كر', 'مر', 'نر', 'هر', 'ير', 'لر', 'سر',
   'بل', 'تل', 'دل', 'كل', 'مل', 'نل', 'هل', 'يل', 'لل', 'سل',
@@ -39,16 +37,39 @@ const Index = () => {
   const [showConfetti, setShowConfetti] = useState(false);
   const [wordFeedback, setWordFeedback] = useState<'success' | 'error' | null>(null);
   const [eliminatedPlayerId, setEliminatedPlayerId] = useState<number | null>(null);
+  const [turnCount, setTurnCount] = useState(0);
 
+
+  const normalizeArabic = (word: string): string => {
+    return word
+      .replace(/[إأآ]/g, 'ا')
+      .replace(/ة/g, 'ه')
+      .replace(/ى/g, 'ي')
+      .replace(/[\u064B-\u0652]/g, '') // harakat (diacritics)
+      .trim();
+  };
+  /*
+  FUNCTION FOR IMPORTING TXT FILE
+  useEffect(() => {
+    fetch('/public/word_data/arabic-words.txt')
+      .then(res => res.text())
+      .then(text => {
+        const words = text.split('\n').map(w => normalizeArabic(w.trim()));
+        setArabicWords(new Set(words));
+      });
+  }, []);
+  */
   const generateNewCombination = useCallback(() => {
     const randomIndex = Math.floor(Math.random() * TWO_LETTER_COMBINATIONS.length);
     return TWO_LETTER_COMBINATIONS[randomIndex];
   }, []);
 
   const isValidWord = useCallback((word: string, combination: string) => {
-    if (word.length < 3) return false;
-    if (usedWords.has(word)) return false;
-    if (!word.includes(combination)) return false;
+
+    const normalizedWord = normalizeArabic(word);
+    //check if combination in word
+    if (!normalizedWord.includes(normalizeArabic(combination))) return false;
+    //check if valid word
     return ARABIC_WORDS_SET.has(word);
   }, [usedWords]);
 
@@ -73,6 +94,7 @@ const Index = () => {
     if (players.length >= 2) {
       setGameState('playing');
       setCurrentCombination(generateNewCombination());
+      setTurnCount(0);
       setTimeLeft(10);
       toast({
         title: "بدأت اللعبة!",
@@ -147,10 +169,19 @@ const Index = () => {
     while (players[nextIndex].isEliminated) {
       nextIndex = (nextIndex + 1) % players.length;
     }
-    
+
+    // Increment turn count
+    const newTurnCount = turnCount + 1;
+    setTurnCount(newTurnCount);
+
+    // Calculate time limit reduction
+    const reductions = Math.floor(newTurnCount / 3);
+    const newTimeLimit = Math.max(3, 10 - reductions * 2);
+
+    // Proceed to next turn
     setCurrentPlayerIndex(nextIndex);
     setCurrentCombination(generateNewCombination());
-    setTimeLeft(Math.max(5, 10 - Math.floor(usedWords.size / 5)));
+    setTimeLeft(newTimeLimit);
   };
 
   // Timer effect
