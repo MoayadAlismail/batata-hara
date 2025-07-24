@@ -248,7 +248,7 @@ io.on('connection', (socket) => {
       });
       nextTurn(pin);
     } else {
-      loseLife(pin, currentPlayer);
+      //loseLife(pin, currentPlayer);
       io.to(pin).emit('word-rejected', {
         word,
         player: currentPlayer,
