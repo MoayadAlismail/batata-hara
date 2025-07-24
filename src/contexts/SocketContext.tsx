@@ -62,7 +62,7 @@ export const SocketProvider: React.FC<{ children: React.ReactNode }> = ({ childr
     // Initialize socket connection only once
     if (!socketRef.current) {
       console.log('Initializing socket connection...');
-      const socket = io('http://localhost:3001', {
+      const socket = io(import.meta.env.PROD ? window.location.origin : 'http://localhost:3001', {
         transports: ['websocket', 'polling'],
         timeout: 20000,
         reconnection: true,

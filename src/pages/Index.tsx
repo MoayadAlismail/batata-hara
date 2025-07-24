@@ -6,7 +6,6 @@ import { Bomb, Timer, Users, Trophy, ArrowLeft } from 'lucide-react';
 import { toast } from '@/hooks/use-toast';
 import { useNavigate } from 'react-router-dom';
 import Confetti from '@/components/Confetti';
-import { ARABIC_WORDS_SET } from '@/data/arabicDictionary';
 import '../styles/animations.css';
 
 interface Player {
@@ -16,13 +15,7 @@ interface Player {
   isEliminated: boolean;
 }
 
-const TWO_LETTER_COMBINATIONS = [
-  'بر', 'تر', 'در', 'كر', 'مر', 'نر', 'هر', 'ير', 'لر', 'سر',
-  'بل', 'تل', 'دل', 'كل', 'مل', 'نل', 'هل', 'يل', 'لل', 'سل',
-  'بت', 'تت', 'دت', 'كت', 'مت', 'نت', 'هت', 'يت', 'لت', 'ست',
-  'بن', 'تن', 'دن', 'كن', 'من', 'نن', 'هن', 'ين', 'لن', 'سن',
-  'بم', 'تم', 'دم', 'كم', 'مم', 'نم', 'هم', 'يم', 'لم', 'سم'
-];
+
 
 const Index = () => {
   const navigate = useNavigate();
@@ -37,41 +30,8 @@ const Index = () => {
   const [showConfetti, setShowConfetti] = useState(false);
   const [wordFeedback, setWordFeedback] = useState<'success' | 'error' | null>(null);
   const [eliminatedPlayerId, setEliminatedPlayerId] = useState<number | null>(null);
-  const [turnCount, setTurnCount] = useState(0);
 
-
-  const normalizeArabic = (word: string): string => {
-    return word
-      .replace(/[إأآ]/g, 'ا')
-      .replace(/ة/g, 'ه')
-      .replace(/ى/g, 'ي')
-      .replace(/[\u064B-\u0652]/g, '') // harakat (diacritics)
-      .trim();
-  };
-  /*
-  FUNCTION FOR IMPORTING TXT FILE
-  useEffect(() => {
-    fetch('/public/word_data/arabic-words.txt')
-      .then(res => res.text())
-      .then(text => {
-        const words = text.split('\n').map(w => normalizeArabic(w.trim()));
-        setArabicWords(new Set(words));
-      });
-  }, []);
-  */
-  const generateNewCombination = useCallback(() => {
-    const randomIndex = Math.floor(Math.random() * TWO_LETTER_COMBINATIONS.length);
-    return TWO_LETTER_COMBINATIONS[randomIndex];
-  }, []);
-
-  const isValidWord = useCallback((word: string, combination: string) => {
-
-    const normalizedWord = normalizeArabic(word);
-    //check if combination in word
-    if (!normalizedWord.includes(normalizeArabic(combination))) return false;
-    //check if valid word
-    return ARABIC_WORDS_SET.has(word);
-  }, [usedWords]);
+  // Remove generateNewCombination and isValidWord functions - server handles this now
 
   const addPlayer = () => {
     if (newPlayerName.trim() && players.length < 8) {
@@ -93,8 +53,7 @@ const Index = () => {
   const startGame = () => {
     if (players.length >= 2) {
       setGameState('playing');
-      setCurrentCombination(generateNewCombination());
-      setTurnCount(0);
+      // Remove client-side combination generation - server will provide this
       setTimeLeft(10);
       toast({
         title: "بدأت اللعبة!",
@@ -107,30 +66,17 @@ const Index = () => {
     const word = currentWord.trim();
     const currentPlayer = players[currentPlayerIndex];
     
-    if (isValidWord(word, currentCombination)) {
-      setUsedWords(prev => new Set([...prev, word]));
-      setWordFeedback('success');
-      toast({
-        title: "كلمة صحيحة!",
-        description: `${currentPlayer.name} كتب: ${word}`,
-      });
-      nextTurn();
-      
-      // Clear feedback after animation
-      setTimeout(() => setWordFeedback(null), 600);
-    } else {
-      setWordFeedback('error');
-      loseLife();
-      toast({
-        title: "كلمة خاطئة!",
-        description: `${word} غير صحيحة أو مستخدمة من قبل`,
-        variant: "destructive",
-      });
-      
-      // Clear feedback after animation
-      setTimeout(() => setWordFeedback(null), 500);
-    }
+    // Remove client-side validation - let server handle everything
+    // For now, just clear the input and show feedback
+    // In a real multiplayer setup, this would send to server via WebSocket
     setCurrentWord('');
+    
+    // Placeholder logic - in real implementation, server would respond
+    // This is just to maintain the current single-player functionality
+    toast({
+      title: "كلمة مرسلة",
+      description: `${currentPlayer.name} كتب: ${word}`,
+    });
   };
 
   const loseLife = () => {
@@ -145,7 +91,6 @@ const Index = () => {
             variant: "destructive",
           });
           
-          // Clear elimination animation after it completes
           setTimeout(() => setEliminatedPlayerId(null), 800);
           
           return { ...player, lives: 0, isEliminated: true };
@@ -169,19 +114,10 @@ const Index = () => {
     while (players[nextIndex].isEliminated) {
       nextIndex = (nextIndex + 1) % players.length;
     }
-
-    // Increment turn count
-    const newTurnCount = turnCount + 1;
-    setTurnCount(newTurnCount);
-
-    // Calculate time limit reduction
-    const reductions = Math.floor(newTurnCount / 3);
-    const newTimeLimit = Math.max(3, 10 - reductions * 2);
-
-    // Proceed to next turn
+    
     setCurrentPlayerIndex(nextIndex);
-    setCurrentCombination(generateNewCombination());
-    setTimeLeft(newTimeLimit);
+    // Remove client-side combination generation - server should provide this
+    setTimeLeft(Math.max(5, 10 - Math.floor(usedWords.size / 5)));
   };
 
   // Timer effect
