@@ -22,7 +22,6 @@ const App = () => (
             <Route path="/" element={<RoomManager />} />
             <Route path="/single-player" element={<Index />} />
             <Route path="/game" element={<MultiplayerGame />} />
-            {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
             <Route path="*" element={<NotFound />} />
           </Routes>
         </BrowserRouter>

@@ -2,11 +2,13 @@ import React, { useState, useEffect, useCallback } from 'react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Bomb, Timer, Users, Trophy, ArrowLeft } from 'lucide-react';
+import { Bomb, Timer, Trophy, ArrowLeft } from 'lucide-react';
 import { toast } from '@/hooks/use-toast';
 import { useNavigate } from 'react-router-dom';
 import Confetti from '@/components/Confetti';
 import '../styles/animations.css';
+// Note: In React/Vite, you can import images like this:
+import PotatoImg from './potato.png';
 
 interface Player {
   id: number;
@@ -14,8 +16,6 @@ interface Player {
   lives: number;
   isEliminated: boolean;
 }
-
-
 
 const Index = () => {
   const navigate = useNavigate();
@@ -148,19 +148,19 @@ const Index = () => {
 
   if (gameState === 'setup') {
     return (
-      <div className="min-h-screen bg-gray-800 flex items-center justify-center p-4 font-arabic">
-        <Card className="w-full max-w-md bg-gray-900/90 backdrop-blur-lg border-fallguys-purple/30 border-4 rounded-3xl">
+      <div className="min-h-screen bg-gray-100 flex items-center justify-center p-4 font-arabic">
+        <Card className="w-full max-w-md bg-white/90 backdrop-blur-lg border-fallguys-purple/30 border-4 rounded-3xl">
           <CardHeader className="text-center">
-            <CardTitle className="text-4xl font-black text-white flex items-center justify-center gap-3 drop-shadow-lg">
+            <CardTitle className="text-4xl font-black text-gray-900 flex items-center justify-center gap-3 drop-shadow-lg">
               <Bomb className="text-fallguys-orange animate-bounce" size={48} />
               بطاطا حارة
             </CardTitle>
-            <p className="text-white/90 text-lg font-semibold">أضف من ١ إلى ٨ لاعبين للبدء</p>
+            <p className="text-gray-700 text-lg font-semibold">أضف من ١ إلى ٨ لاعبين للبدء</p>
             <div className="mt-4">
               <Button 
                 onClick={() => navigate('/')}
                 variant="ghost"
-                className="text-white/80 hover:text-white hover:bg-gray-800/50"
+                className="text-gray-600 hover:text-gray-900 hover:bg-gray-200/50"
               >
                 <ArrowLeft className="ml-2 h-4 w-4" />
                 عودة للقائمة الرئيسية
@@ -174,12 +174,12 @@ const Index = () => {
                 value={newPlayerName}
                 onChange={(e) => setNewPlayerName(e.target.value)}
                 onKeyPress={(e) => e.key === 'Enter' && addPlayer()}
-                className="bg-gray-800/80 border-fallguys-purple/50 border-2 text-white placeholder:text-white/70 text-lg font-bold rounded-xl"
+                className="bg-gray-50 border-fallguys-purple/50 border-2 text-gray-900 placeholder:text-gray-500 text-lg font-bold rounded-xl"
               />
               <Button 
                 onClick={addPlayer} 
                 disabled={players.length >= 8}
-                className="bg-fallguys-green hover:bg-fallguys-green/80 text-white font-bold text-lg px-6 rounded-xl border-2 border-white/30"
+                className="bg-fallguys-green hover:bg-fallguys-green/80 text-white font-bold text-lg px-6 rounded-xl border-2 border-gray-300"
               >
                 إضافة
               </Button>
@@ -187,11 +187,11 @@ const Index = () => {
             
             <div className="space-y-3">
               {players.map((player) => (
-                <div key={player.id} className="flex items-center justify-between bg-gray-800/80 p-4 rounded-xl border-2 border-fallguys-blue/30">
-                  <span className="text-white font-bold text-lg">{player.name}</span>
+                <div key={player.id} className="flex items-center justify-between bg-gray-50 p-4 rounded-xl border-2 border-fallguys-blue/30">
+                  <span className="text-gray-900 font-bold text-lg">{player.name}</span>
                   <div className="flex gap-1">
                     {[...Array(3)].map((_, i) => (
-                      <div key={i} className="w-4 h-4 rounded-full bg-fallguys-red border-2 border-white/50"></div>
+                      <div key={i} className="w-4 h-4 rounded-full bg-fallguys-red border-2 border-gray-300"></div>
                     ))}
                   </div>
                 </div>
@@ -201,9 +201,9 @@ const Index = () => {
             <Button 
               onClick={startGame} 
               disabled={players.length < 2}
-              className="w-full bg-gradient-to-r from-fallguys-orange to-fallguys-red hover:from-fallguys-orange/80 hover:to-fallguys-red/80 text-white font-black text-xl py-6 rounded-xl border-4 border-white/30"
+              className="w-full bg-gradient-to-r from-fallguys-orange to-fallguys-red hover:from-fallguys-orange/80 hover:to-fallguys-red/80 text-white font-black text-xl py-6 rounded-xl border-4 border-gray-300"
             >
-              <Users className="ml-3 h-6 w-6" />
+              <img src={PotatoImg} alt="Potato" className="ml-3 h-12 w-12" />
               ابدأ اللعبة ({players.length}/8)
             </Button>
           </CardContent>
@@ -216,10 +216,10 @@ const Index = () => {
     return (
       <>
         <Confetti active={showConfetti} onComplete={() => setShowConfetti(false)} />
-        <div className="min-h-screen bg-gray-800 flex items-center justify-center p-4 font-arabic">
-          <Card className="w-full max-w-md bg-gray-900/90 backdrop-blur-lg border-fallguys-purple/30 border-4 rounded-3xl text-center">
+        <div className="min-h-screen bg-gray-100 flex items-center justify-center p-4 font-arabic">
+          <Card className="w-full max-w-md bg-white/90 backdrop-blur-lg border-fallguys-purple/30 border-4 rounded-3xl text-center">
             <CardHeader>
-              <CardTitle className="text-4xl font-black text-white flex items-center justify-center gap-3 drop-shadow-lg">
+              <CardTitle className="text-4xl font-black text-gray-900 flex items-center justify-center gap-3 drop-shadow-lg">
                 <Trophy className="text-fallguys-yellow animate-bounce" size={48} />
                 انتهت اللعبة!
               </CardTitle>
@@ -231,13 +231,13 @@ const Index = () => {
                 </div>
               )}
               <div className="space-y-3">
-                <h3 className="text-white font-bold text-xl">النتائج النهائية:</h3>
+                <h3 className="text-gray-900 font-bold text-xl">النتائج النهائية:</h3>
                 {players.map((player) => (
-                  <div key={player.id} className="flex items-center justify-between bg-gray-800/80 p-3 rounded-xl border-2 border-fallguys-blue/30">
+                  <div key={player.id} className="flex items-center justify-between bg-gray-50 p-3 rounded-xl border-2 border-fallguys-blue/30">
                     <span className={`font-bold text-lg ${player.isEliminated ? 'text-fallguys-red' : 'text-fallguys-green'}`}>
                       {player.name}
                     </span>
-                    <span className="text-white font-bold">
+                    <span className="text-gray-900 font-bold">
                       {player.isEliminated ? 'مقصى' : `${player.lives} أرواح`}
                     </span>
                   </div>
@@ -245,7 +245,7 @@ const Index = () => {
               </div>
               <Button 
                 onClick={resetGame} 
-                className="w-full bg-fallguys-green hover:bg-fallguys-green/80 text-white font-bold text-xl py-4 rounded-xl border-2 border-white/30"
+                className="w-full bg-fallguys-green hover:bg-fallguys-green/80 text-white font-bold text-xl py-4 rounded-xl border-2 border-gray-300"
               >
                 العب مرة أخرى
               </Button>
@@ -259,16 +259,16 @@ const Index = () => {
   const currentPlayer = players[currentPlayerIndex];
 
   return (
-    <div className="min-h-screen bg-gray-800 p-4 font-arabic">
+    <div className="min-h-screen bg-gray-100 p-4 font-arabic">
       <div className="max-w-4xl mx-auto space-y-6">
         {/* Header */}
         <div className="text-center">
-          <h1 className="text-5xl font-black text-white mb-4 flex items-center justify-center gap-3 drop-shadow-lg">
+          <h1 className="text-5xl font-black text-gray-900 mb-4 flex items-center justify-center gap-3 drop-shadow-lg">
             <Bomb className={`text-fallguys-orange ${timeLeft <= 3 ? 'bomb-tick-intense' : timeLeft <= 5 ? 'bomb-tick' : 'animate-bounce'}`} size={56} />
             بطاطا حارة
           </h1>
-          <div className="text-white/90 text-xl font-bold">
-            ابحث عن كلمة تحتوي على: <span className="font-black text-fallguys-yellow text-3xl bg-gray-900/80 px-4 py-2 rounded-xl border-2 border-white/30">{currentCombination}</span>
+          <div className="text-gray-700 text-xl font-bold">
+            ابحث عن كلمة تحتوي على: <span className="font-black text-fallguys-yellow text-3xl bg-white/80 px-4 py-2 rounded-xl border-2 border-gray-300">{currentCombination}</span>
           </div>
         </div>
 
@@ -283,9 +283,9 @@ const Index = () => {
         </div>
 
         {/* Current Player */}
-        <Card className="bg-gray-900/90 backdrop-blur-lg border-fallguys-purple/30 border-4 rounded-3xl">
+        <Card className="bg-white/90 backdrop-blur-lg border-fallguys-purple/30 border-4 rounded-3xl">
           <CardHeader className="text-center">
-            <CardTitle className="text-3xl text-white font-black">
+            <CardTitle className="text-3xl text-gray-900 font-black">
               دور {currentPlayer.name}
             </CardTitle>
           </CardHeader>
@@ -296,14 +296,14 @@ const Index = () => {
                 value={currentWord}
                 onChange={(e) => setCurrentWord(e.target.value)}
                 onKeyPress={(e) => e.key === 'Enter' && handleWordSubmit()}
-                className={`bg-gray-800/80 border-fallguys-blue/50 border-2 text-white placeholder:text-white/70 text-xl font-bold rounded-xl ${
+                className={`bg-gray-50 border-fallguys-blue/50 border-2 text-gray-900 placeholder:text-gray-500 text-xl font-bold rounded-xl ${
                   wordFeedback === 'success' ? 'word-success' : wordFeedback === 'error' ? 'word-error' : ''
                 }`}
                 autoFocus
               />
               <Button 
                 onClick={handleWordSubmit} 
-                className="bg-fallguys-green hover:bg-fallguys-green/80 text-white font-bold text-lg px-8 rounded-xl border-2 border-white/30"
+                className="bg-fallguys-green hover:bg-fallguys-green/80 text-white font-bold text-lg px-8 rounded-xl border-2 border-gray-300"
               >
                 إرسال
               </Button>
@@ -314,19 +314,19 @@ const Index = () => {
         {/* Players Status */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
           {players.map((player, index) => (
-            <Card key={player.id} className={`bg-gray-900/90 backdrop-blur-lg border-4 rounded-2xl ${
+            <Card key={player.id} className={`bg-white/90 backdrop-blur-lg border-4 rounded-2xl ${
               index === currentPlayerIndex ? 'border-fallguys-yellow shadow-lg shadow-fallguys-yellow/50' : 'border-fallguys-purple/30'
             } ${player.isEliminated ? 'opacity-50' : ''} ${
               eliminatedPlayerId === player.id ? 'player-eliminate' : ''
             }`}>
               <CardContent className="p-4 text-center">
-                <div className="text-white font-bold mb-3 text-lg">{player.name}</div>
+                <div className="text-gray-900 font-bold mb-3 text-lg">{player.name}</div>
                 <div className="flex justify-center gap-2 mb-3">
                   {[...Array(3)].map((_, i) => (
                     <div
                       key={i}
-                      className={`w-4 h-4 rounded-full border-2 border-white/50 transition-all duration-300 ${
-                        i < player.lives ? 'bg-fallguys-red scale-100' : 'bg-gray-600 scale-75'
+                      className={`w-4 h-4 rounded-full border-2 border-gray-300 transition-all duration-300 ${
+                        i < player.lives ? 'bg-fallguys-red scale-100' : 'bg-gray-400 scale-75'
                       }`}
                     ></div>
                   ))}
@@ -340,9 +340,9 @@ const Index = () => {
         </div>
 
         {/* Game Stats */}
-        <Card className="bg-gray-900/90 backdrop-blur-lg border-fallguys-purple/30 border-4 rounded-2xl">
+        <Card className="bg-white/90 backdrop-blur-lg border-fallguys-purple/30 border-4 rounded-2xl">
           <CardContent className="p-4">
-            <div className="text-center text-white font-bold">
+            <div className="text-center text-gray-900 font-bold">
               <div className="text-lg">الكلمات المستخدمة: {usedWords.size}</div>
               <div className="text-lg">اللاعبون النشطون: {activePlayers.length}</div>
             </div>

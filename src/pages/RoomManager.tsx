@@ -8,6 +8,7 @@ import { Users, Plus, LogIn, Wifi, WifiOff, User, Monitor } from 'lucide-react';
 import { useSocket } from '@/contexts/SocketContext';
 import { toast } from '@/hooks/use-toast';
 import { useNavigate } from 'react-router-dom';
+import PotatoImg from './potato.png';
 
 const RoomManager = () => {
   const { gameState, createRoom, joinRoom } = useSocket();
@@ -99,11 +100,11 @@ const RoomManager = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gray-800 flex items-center justify-center p-4 font-arabic">
-      <Card className="w-full max-w-md bg-gray-900/90 backdrop-blur-lg border-fallguys-purple/30 border-4 rounded-3xl">
+    <div className="min-h-screen bg-gray-100 flex items-center justify-center p-4 font-arabic">
+      <Card className="w-full max-w-md bg-white/90 backdrop-blur-lg border-fallguys-purple/30 border-4 rounded-3xl">
         <CardHeader className="text-center">
-          <CardTitle className="text-4xl font-black text-white flex items-center justify-center gap-3 drop-shadow-lg">
-            <Users className="text-fallguys-orange animate-bounce" size={48} />
+          <CardTitle className="text-4xl font-black text-gray-900 flex items-center justify-center gap-3 drop-shadow-lg">
+          <img src={PotatoImg} alt="Potato" className="ml-3 h-12 w-12 animate-bounce" />
             بطاطا حارة
           </CardTitle>
           <div className="flex items-center justify-center gap-2 mt-2">
@@ -126,24 +127,24 @@ const RoomManager = () => {
         </CardHeader>
         <CardContent>
           <Tabs defaultValue="single" className="w-full">
-            <TabsList className="grid w-full grid-cols-3 bg-gray-800/50 border-fallguys-purple/30 border-2 rounded-xl">
+            <TabsList className="grid w-full grid-cols-3 bg-gray-200/50 border-fallguys-purple/30 border-2 rounded-xl">
               <TabsTrigger 
                 value="single" 
-                className="text-white data-[state=active]:bg-fallguys-purple data-[state=active]:text-white font-bold"
+                className="text-gray-900 data-[state=active]:bg-fallguys-purple data-[state=active]:text-white font-bold"
               >
                 <User className="ml-2 h-4 w-4" />
                 لاعب واحد
               </TabsTrigger>
               <TabsTrigger 
                 value="join" 
-                className="text-white data-[state=active]:bg-fallguys-blue data-[state=active]:text-white font-bold"
+                className="text-gray-900 data-[state=active]:bg-fallguys-blue data-[state=active]:text-white font-bold"
               >
                 <LogIn className="ml-2 h-4 w-4" />
                 انضم
               </TabsTrigger>
               <TabsTrigger 
                 value="create" 
-                className="text-white data-[state=active]:bg-fallguys-green data-[state=active]:text-white font-bold"
+                className="text-gray-900 data-[state=active]:bg-fallguys-green data-[state=active]:text-white font-bold"
               >
                 <Plus className="ml-2 h-4 w-4" />
                 إنشاء
@@ -152,12 +153,12 @@ const RoomManager = () => {
             
             <TabsContent value="single" className="space-y-4 mt-6">
               <div className="text-center space-y-4">
-                <p className="text-white/90 text-lg">
+                <p className="text-gray-700 text-lg">
                   العب لوحدك على نفس الجهاز
                 </p>
                 <Button 
                   onClick={() => navigate('/single-player')}
-                  className="w-full bg-fallguys-purple hover:bg-fallguys-purple/80 text-white font-black text-xl py-6 rounded-xl border-4 border-white/30"
+                  className="w-full bg-fallguys-purple hover:bg-fallguys-purple/80 text-white font-black text-xl py-6 rounded-xl border-4 border-gray-300"
                 >
                   <User className="ml-3 h-6 w-6" />
                   ابدأ اللعب الفردي
@@ -171,19 +172,19 @@ const RoomManager = () => {
                   placeholder="اسم اللاعب"
                   value={playerName}
                   onChange={(e) => setPlayerName(e.target.value)}
-                  className="bg-gray-800/80 border-fallguys-blue/50 border-2 text-white placeholder:text-white/70 text-lg font-bold rounded-xl"
+                  className="bg-gray-50 border-fallguys-blue/50 border-2 text-gray-900 placeholder:text-gray-500 text-lg font-bold rounded-xl"
                 />
                 <Input
                   placeholder="رقم الغرفة (6 أرقام)"
                   value={joinPin}
                   onChange={(e) => setJoinPin(e.target.value.replace(/\D/g, '').slice(0, 6))}
-                  className="bg-gray-800/80 border-fallguys-blue/50 border-2 text-white placeholder:text-white/70 text-lg font-bold rounded-xl text-center tracking-wider"
+                  className="bg-gray-50 border-fallguys-blue/50 border-2 text-gray-900 placeholder:text-gray-500 text-lg font-bold rounded-xl text-center tracking-wider"
                 />
               </div>
               <Button 
                 onClick={handleJoinRoom}
                 disabled={isLoading || !gameState.connected || !joinPin.trim() || !playerName.trim()}
-                className="w-full bg-fallguys-blue hover:bg-fallguys-blue/80 text-white font-black text-xl py-6 rounded-xl border-4 border-white/30"
+                className="w-full bg-fallguys-blue hover:bg-fallguys-blue/80 text-white font-black text-xl py-6 rounded-xl border-4 border-gray-300"
               >
                 {isLoading ? 'جاري الانضمام...' : 'انضم للغرفة'}
               </Button>
@@ -195,20 +196,20 @@ const RoomManager = () => {
                   placeholder="اسم اللاعب (المضيف)"
                   value={playerName}
                   onChange={(e) => setPlayerName(e.target.value)}
-                  className="bg-gray-800/80 border-fallguys-green/50 border-2 text-white placeholder:text-white/70 text-lg font-bold rounded-xl"
+                  className="bg-gray-50 border-fallguys-green/50 border-2 text-gray-900 placeholder:text-gray-500 text-lg font-bold rounded-xl"
                 />
               </div>
               <Button 
                 onClick={handleCreateRoom}
                 disabled={isLoading || !gameState.connected || !playerName.trim()}
-                className="w-full bg-fallguys-green hover:bg-fallguys-green/80 text-white font-black text-xl py-6 rounded-xl border-4 border-white/30"
+                className="w-full bg-fallguys-green hover:bg-fallguys-green/80 text-white font-black text-xl py-6 rounded-xl border-4 border-gray-300"
               >
                 {isLoading ? 'جاري إنشاء الغرفة...' : 'إنشاء غرفة جديدة'}
               </Button>
             </TabsContent>
           </Tabs>
           
-          <div className="mt-6 text-center text-white/80 text-sm">
+          <div className="mt-6 text-center text-gray-600 text-sm">
             <p className="mb-2">لعبة الكلمات العربية الممتعة</p>
             <p>ابحث عن الكلمات التي تحتوي على الحروف المطلوبة</p>
             <p className="mt-2">
@@ -216,7 +217,7 @@ const RoomManager = () => {
               لاعب واحد: العب على نفس الجهاز
             </p>
             <p>
-              <Users className="inline h-4 w-4 ml-1" />
+            <Users className="inline h-4 w-4 ml-1" />
               متعدد اللاعبين: العب مع الأصدقاء عبر الإنترنت
             </p>
           </div>

@@ -3,12 +3,13 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
-import { Bomb, Timer, Users, Trophy, Copy, Crown, Wifi, WifiOff } from 'lucide-react';
+import { Bomb, Timer, Trophy, Copy, Crown, Wifi, WifiOff } from 'lucide-react';
 import { useSocket } from '@/contexts/SocketContext';
 import { toast } from '@/hooks/use-toast';
 import { useNavigate } from 'react-router-dom';
 import Confetti from '@/components/Confetti';
 import '../styles/animations.css';
+import PotatoImg from './potato.png';
 
 const MultiplayerGame = () => {
   const { socket, gameState, startGame, submitWord, leaveRoom, resetGame } = useSocket();
@@ -124,10 +125,10 @@ const MultiplayerGame = () => {
 
   if (!gameState.pin) {
     return (
-      <div className="min-h-screen bg-gray-800 flex items-center justify-center p-4 font-arabic">
-        <Card className="w-full max-w-md bg-gray-900/90 backdrop-blur-lg border-fallguys-red/30 border-4 rounded-3xl">
+      <div className="min-h-screen bg-gray-100 flex items-center justify-center p-4 font-arabic">
+        <Card className="w-full max-w-md bg-white/90 backdrop-blur-lg border-fallguys-red/30 border-4 rounded-3xl">
           <CardContent className="p-8 text-center">
-            <div className="text-white text-xl mb-4">لا توجد غرفة نشطة</div>
+            <div className="text-gray-900 text-xl mb-4">لا توجد غرفة نشطة</div>
             <Button 
               onClick={() => navigate('/')}
               className="bg-fallguys-blue hover:bg-fallguys-blue/80 text-white font-bold"
@@ -143,11 +144,11 @@ const MultiplayerGame = () => {
   // Setup phase
   if (gameState.gameState === 'setup') {
     return (
-      <div className="min-h-screen bg-gray-800 flex items-center justify-center p-4 font-arabic">
-        <Card className="w-full max-w-md bg-gray-900/90 backdrop-blur-lg border-fallguys-purple/30 border-4 rounded-3xl">
+      <div className="min-h-screen bg-gray-100 flex items-center justify-center p-4 font-arabic">
+        <Card className="w-full max-w-md bg-white/90 backdrop-blur-lg border-fallguys-purple/30 border-4 rounded-3xl">
           <CardHeader className="text-center">
-            <CardTitle className="text-4xl font-black text-white flex items-center justify-center gap-3 drop-shadow-lg">
-              <Users className="text-fallguys-orange animate-bounce" size={48} />
+            <CardTitle className="text-4xl font-black text-gray-900 flex items-center justify-center gap-3 drop-shadow-lg">
+            <img src={PotatoImg} alt="Potato" className="ml-3 h-12 w-12" />
               بطاطا حارة
             </CardTitle>
             <div className="flex items-center justify-center gap-2 mt-2">
@@ -170,8 +171,8 @@ const MultiplayerGame = () => {
           </CardHeader>
           <CardContent className="space-y-6">
             {/* Room Info */}
-            <div className="bg-gray-800/80 p-4 rounded-xl border-2 border-fallguys-blue/30 text-center">
-              <p className="text-white/80 text-sm mb-2">رقم الغرفة</p>
+            <div className="bg-gray-50 p-4 rounded-xl border-2 border-fallguys-blue/30 text-center">
+              <p className="text-gray-600 text-sm mb-2">رقم الغرفة</p>
               <div className="flex items-center justify-center gap-2">
                 <span className="text-fallguys-yellow font-black text-2xl tracking-wider">
                   {gameState.pin}
@@ -189,20 +190,20 @@ const MultiplayerGame = () => {
 
             {/* Players List */}
             <div className="space-y-3">
-              <h3 className="text-white font-bold text-lg text-center">
+              <h3 className="text-gray-900 font-bold text-lg text-center">
                 اللاعبون ({gameState.players.length}/8)
               </h3>
               {gameState.players.map((player) => (
-                <div key={player.id} className="flex items-center justify-between bg-gray-800/80 p-4 rounded-xl border-2 border-fallguys-blue/30">
+                <div key={player.id} className="flex items-center justify-between bg-gray-50 p-4 rounded-xl border-2 border-fallguys-blue/30">
                   <div className="flex items-center gap-2">
-                    <span className="text-white font-bold text-lg">{player.name}</span>
+                    <span className="text-gray-900 font-bold text-lg">{player.name}</span>
                     {gameState.isHost && player.socketId === socket?.id && (
                       <Crown className="text-fallguys-yellow" size={20} />
                     )}
                   </div>
                   <div className="flex gap-1">
                     {[...Array(3)].map((_, i) => (
-                      <div key={i} className="w-4 h-4 rounded-full bg-fallguys-red border-2 border-white/50"></div>
+                      <div key={i} className="w-4 h-4 rounded-full bg-fallguys-red border-2 border-gray-300"></div>
                     ))}
                   </div>
                 </div>
@@ -215,7 +216,7 @@ const MultiplayerGame = () => {
                 <Button 
                   onClick={handleStartGame}
                   disabled={gameState.players.length < 2}
-                  className="w-full bg-gradient-to-r from-fallguys-orange to-fallguys-red hover:from-fallguys-orange/80 hover:to-fallguys-red/80 text-white font-black text-xl py-6 rounded-xl border-4 border-white/30"
+                  className="w-full bg-gradient-to-r from-fallguys-orange to-fallguys-red hover:from-fallguys-orange/80 hover:to-fallguys-red/80 text-white font-black text-xl py-6 rounded-xl border-4 border-gray-300"
                 >
                   ابدأ اللعبة ({gameState.players.length}/8)
                 </Button>
@@ -224,14 +225,14 @@ const MultiplayerGame = () => {
               <Button 
                 onClick={handleLeaveRoom}
                 variant="outline"
-                className="w-full bg-gray-700/50 border-fallguys-red/50 text-white hover:bg-fallguys-red/20 font-bold"
+                className="w-full bg-gray-200/50 border-fallguys-red/50 text-gray-900 hover:bg-fallguys-red/20 font-bold"
               >
                 مغادرة الغرفة
               </Button>
             </div>
 
             {!gameState.isHost && (
-              <div className="text-center text-white/80 text-sm">
+              <div className="text-center text-gray-600 text-sm">
                 في انتظار المضيف لبدء اللعبة...
               </div>
             )}
@@ -246,10 +247,10 @@ const MultiplayerGame = () => {
     return (
       <>
         <Confetti active={showConfetti} onComplete={() => setShowConfetti(false)} />
-        <div className="min-h-screen bg-gray-800 flex items-center justify-center p-4 font-arabic">
-          <Card className="w-full max-w-md bg-gray-900/90 backdrop-blur-lg border-fallguys-purple/30 border-4 rounded-3xl text-center">
+        <div className="min-h-screen bg-gray-100 flex items-center justify-center p-4 font-arabic">
+          <Card className="w-full max-w-md bg-white/90 backdrop-blur-lg border-fallguys-purple/30 border-4 rounded-3xl text-center">
             <CardHeader>
-              <CardTitle className="text-4xl font-black text-white flex items-center justify-center gap-3 drop-shadow-lg">
+              <CardTitle className="text-4xl font-black text-gray-900 flex items-center justify-center gap-3 drop-shadow-lg">
                 <Trophy className="text-fallguys-yellow animate-bounce" size={48} />
                 انتهت اللعبة!
               </CardTitle>
@@ -262,13 +263,13 @@ const MultiplayerGame = () => {
               )}
               
               <div className="space-y-3">
-                <h3 className="text-white font-bold text-xl">النتائج النهائية:</h3>
+                <h3 className="text-gray-900 font-bold text-xl">النتائج النهائية:</h3>
                 {gameState.players.map((player) => (
-                  <div key={player.id} className="flex items-center justify-between bg-gray-800/80 p-3 rounded-xl border-2 border-fallguys-blue/30">
+                  <div key={player.id} className="flex items-center justify-between bg-gray-50 p-3 rounded-xl border-2 border-fallguys-blue/30">
                     <span className={`font-bold text-lg ${player.isEliminated ? 'text-fallguys-red' : 'text-fallguys-green'}`}>
                       {player.name}
                     </span>
-                    <span className="text-white font-bold">
+                    <span className="text-gray-900 font-bold">
                       {player.isEliminated ? 'مقصى' : `${player.lives} أرواح`}
                     </span>
                   </div>
@@ -279,7 +280,7 @@ const MultiplayerGame = () => {
                 {gameState.isHost && (
                   <Button 
                     onClick={handleResetGame}
-                    className="w-full bg-fallguys-green hover:bg-fallguys-green/80 text-white font-bold text-xl py-4 rounded-xl border-2 border-white/30"
+                    className="w-full bg-fallguys-green hover:bg-fallguys-green/80 text-white font-bold text-xl py-4 rounded-xl border-2 border-gray-300"
                   >
                     العب مرة أخرى
                   </Button>
@@ -288,7 +289,7 @@ const MultiplayerGame = () => {
                 <Button 
                   onClick={handleLeaveRoom}
                   variant="outline"
-                  className="w-full bg-gray-700/50 border-fallguys-red/50 text-white hover:bg-fallguys-red/20 font-bold"
+                  className="w-full bg-gray-200/50 border-fallguys-red/50 text-gray-900 hover:bg-fallguys-red/20 font-bold"
                 >
                   مغادرة الغرفة
                 </Button>
@@ -305,16 +306,21 @@ const MultiplayerGame = () => {
   const isMyTurn = currentPlayer?.socketId === socket?.id;
 
   return (
-    <div className="min-h-screen bg-gray-800 p-4 font-arabic">
+    <div className="min-h-screen bg-gray-100 p-4 font-arabic">
       <div className="max-w-4xl mx-auto space-y-6">
         {/* Header */}
         <div className="text-center">
-          <h1 className="text-5xl font-black text-white mb-4 flex items-center justify-center gap-3 drop-shadow-lg">
-            <Bomb className={`text-fallguys-orange ${gameState.timeLeft <= 3 ? 'bomb-tick-intense' : gameState.timeLeft <= 5 ? 'bomb-tick' : 'animate-bounce'}`} size={56} />
+          <h1 className="text-5xl font-black text-gray-900 mb-4 flex items-center justify-center gap-3 drop-shadow-lg">
+            <img
+              src={PotatoImg}
+              alt="Potato"
+              className={`${gameState.timeLeft <= 3 ? 'bomb-tick-intense' : gameState.timeLeft <= 5 ? 'bomb-tick' : 'animate-bounce'} ml-2 h-14 w-14`}
+              style={{ display: 'inline-block', verticalAlign: 'middle' }}
+            />
             بطاطا حارة
           </h1>
-          <div className="text-white/90 text-xl font-bold">
-            ابحث عن كلمة تحتوي على: <span className="font-black text-fallguys-yellow text-3xl bg-gray-900/80 px-4 py-2 rounded-xl border-2 border-white/30">{gameState.currentCombination}</span>
+          <div className="text-gray-700 text-xl font-bold">
+            ابحث عن كلمة تحتوي على: <span className="font-black text-fallguys-yellow text-3xl bg-white/80 px-4 py-2 rounded-xl border-2 border-gray-300">{gameState.currentCombination}</span>
           </div>
         </div>
 
@@ -336,9 +342,9 @@ const MultiplayerGame = () => {
         </div>
 
         {/* Current Player */}
-        <Card className="bg-gray-900/90 backdrop-blur-lg border-fallguys-purple/30 border-4 rounded-3xl">
+        <Card className="bg-white/90 backdrop-blur-lg border-fallguys-purple/30 border-4 rounded-3xl">
           <CardHeader className="text-center">
-            <CardTitle className="text-3xl text-white font-black">
+            <CardTitle className="text-3xl text-gray-900 font-black">
               {isMyTurn ? 'دورك!' : `دور ${currentPlayer?.name}`}
             </CardTitle>
           </CardHeader>
@@ -349,7 +355,7 @@ const MultiplayerGame = () => {
                 value={currentWord}
                 onChange={(e) => setCurrentWord(e.target.value)}
                 onKeyPress={(e) => e.key === 'Enter' && isMyTurn && handleWordSubmit()}
-                className={`bg-gray-800/80 border-fallguys-blue/50 border-2 text-white placeholder:text-white/70 text-xl font-bold rounded-xl ${
+                className={`bg-gray-50 border-fallguys-blue/50 border-2 text-gray-900 placeholder:text-gray-500 text-xl font-bold rounded-xl ${
                   wordFeedback === 'success' ? 'word-success' : wordFeedback === 'error' ? 'word-error' : ''
                 }`}
                 disabled={!isMyTurn}
@@ -358,14 +364,14 @@ const MultiplayerGame = () => {
               <Button 
                 onClick={handleWordSubmit}
                 disabled={!isMyTurn || !currentWord.trim()}
-                className="bg-fallguys-green hover:bg-fallguys-green/80 text-white font-bold text-lg px-8 rounded-xl border-2 border-white/30"
+                className="bg-fallguys-green hover:bg-fallguys-green/80 text-white font-bold text-lg px-8 rounded-xl border-2 border-gray-300"
               >
                 إرسال
               </Button>
             </div>
             
             {!isMyTurn && (
-              <div className="text-center text-white/80 text-lg">
+              <div className="text-center text-gray-600 text-lg">
                 في انتظار {currentPlayer?.name}...
               </div>
             )}
@@ -375,13 +381,13 @@ const MultiplayerGame = () => {
         {/* Players Status */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
           {gameState.players.map((player) => (
-            <Card key={player.id} className={`bg-gray-900/90 backdrop-blur-lg border-4 rounded-2xl ${
+            <Card key={player.id} className={`bg-white/90 backdrop-blur-lg border-4 rounded-2xl ${
               player.id === currentPlayer?.id ? 'border-fallguys-yellow shadow-lg shadow-fallguys-yellow/50' : 'border-fallguys-purple/30'
             } ${player.isEliminated ? 'opacity-50' : ''} ${
               eliminatedPlayerId === player.id ? 'player-eliminate' : ''
             }`}>
               <CardContent className="p-4 text-center">
-                <div className="text-white font-bold mb-3 text-lg flex items-center justify-center gap-2">
+                <div className="text-gray-900 font-bold mb-3 text-lg flex items-center justify-center gap-2">
                   {player.name}
                   {gameState.isHost && player.socketId === socket?.id && (
                     <Crown className="text-fallguys-yellow" size={16} />
@@ -391,8 +397,8 @@ const MultiplayerGame = () => {
                   {[...Array(3)].map((_, i) => (
                     <div
                       key={i}
-                      className={`w-4 h-4 rounded-full border-2 border-white/50 transition-all duration-300 ${
-                        i < player.lives ? 'bg-fallguys-red scale-100' : 'bg-gray-600 scale-75'
+                      className={`w-4 h-4 rounded-full border-2 border-gray-300 transition-all duration-300 ${
+                        i < player.lives ? 'bg-fallguys-red scale-100' : 'bg-gray-400 scale-75'
                       }`}
                     ></div>
                   ))}
@@ -406,9 +412,9 @@ const MultiplayerGame = () => {
         </div>
 
         {/* Game Stats */}
-        <Card className="bg-gray-900/90 backdrop-blur-lg border-fallguys-purple/30 border-4 rounded-2xl">
+        <Card className="bg-white/90 backdrop-blur-lg border-fallguys-purple/30 border-4 rounded-2xl">
           <CardContent className="p-4">
-            <div className="text-center text-white font-bold">
+            <div className="text-center text-gray-900 font-bold">
               <div className="text-lg">الكلمات المستخدمة: {gameState.usedWords.length}</div>
               <div className="text-lg">اللاعبون النشطون: {gameState.players.filter(p => !p.isEliminated).length}</div>
             </div>

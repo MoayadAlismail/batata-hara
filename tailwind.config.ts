@@ -20,8 +20,8 @@ export default {
 		},
 		extend: {
 			fontFamily: {
-				'sans': ['IBM Plex Sans Arabic', 'sans-serif'],
-				'arabic': ['IBM Plex Sans Arabic', 'sans-serif'],
+				'sans': ['Mada', 'sans-serif'],
+				'arabic': ['Mada', 'sans-serif'],
 			},
 			colors: {
 				border: 'hsl(var(--border))',
