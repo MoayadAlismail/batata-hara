@@ -133,7 +133,7 @@ const RoomManager = () => {
                 className="text-gray-900 data-[state=active]:bg-fallguys-purple data-[state=active]:text-white font-bold"
               >
                 <User className="ml-2 h-4 w-4" />
-                لاعب واحد
+                اللعب المحلي
               </TabsTrigger>
               <TabsTrigger 
                 value="join" 
@@ -154,14 +154,14 @@ const RoomManager = () => {
             <TabsContent value="single" className="space-y-4 mt-6">
               <div className="text-center space-y-4">
                 <p className="text-gray-700 text-lg">
-                  العب لوحدك على نفس الجهاز
+                  العب على نفس الجهاز
                 </p>
                 <Button 
                   onClick={() => navigate('/single-player')}
                   className="w-full bg-fallguys-purple hover:bg-fallguys-purple/80 text-white font-black text-xl py-6 rounded-xl border-4 border-gray-300"
                 >
                   <User className="ml-3 h-6 w-6" />
-                  ابدأ اللعب الفردي
+                  ابدأ اللعب المحلي
                 </Button>
               </div>
             </TabsContent>
@@ -214,7 +214,7 @@ const RoomManager = () => {
             <p>ابحث عن الكلمات التي تحتوي على الحروف المطلوبة</p>
             <p className="mt-2">
               <Monitor className="inline h-4 w-4 ml-1" />
-              لاعب واحد: العب على نفس الجهاز
+              اللعب المحلي: العب على نفس الجهاز
             </p>
             <p>
             <Users className="inline h-4 w-4 ml-1" />

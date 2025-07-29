@@ -203,8 +203,12 @@ io.on('connection', (socket) => {
     room.currentCombination = generateCombination();
     room.timeLeft = room.gameSettings.initialTimer;
     room.usedWords.clear();
-    
     const players = getRoomPlayers(room);
+    //fix for host lives not resetting
+    players.forEach(player => {
+        player.lives = 3;
+        player.isEliminated = false;
+    });
     const currentPlayer = players[room.currentPlayerIndex];
     
     io.to(pin).emit('game-started', {
@@ -341,7 +345,12 @@ function nextTurn(pin) {
   if (!room) return;
   
   const players = getRoomPlayers(room);
-  
+
+  players.forEach(player => {
+    console.log(`lives for ${player.name} →`, player.lives);
+    console.log(`is ${player.name} eliminated? →`, player.isEliminated);
+  });
+
   // Find next active player
   let nextIndex = (room.currentPlayerIndex + 1) % players.length;
   while (players[nextIndex].isEliminated) {
@@ -389,8 +398,21 @@ const TWO_LETTER_COMBINATIONS = [
   'بل', 'تل', 'دل', 'كل', 'مل', 'نل', 'هل', 'يل', 'لل', 'سل',
   'بت', 'تت', 'دت', 'كت', 'مت', 'نت', 'هت', 'يت', 'لت', 'ست',
   'بن', 'تن', 'دن', 'كن', 'من', 'نن', 'هن', 'ين', 'لن', 'سن',
-  'بم', 'تم', 'دم', 'كم', 'مم', 'نم', 'هم', 'يم', 'لم', 'سم'
+  'بم', 'تم', 'دم', 'كم', 'مم', 'نم', 'هم', 'يم', 'لم', 'سم',
+  'فا', 'فق', 'في', 'فو', 'فت', 'فر', 'فل', 'فن',
+  'قا', 'قب', 'قد', 'قط', 'قف', 'قل', 'قر', 'قو',
+  'سا', 'سب', 'سد', 'سط', 'سق', 'سل', 'سر', 'سو',
+  'شا', 'شب', 'شد', 'شط', 'شل', 'شر', 'شو',
+  'صا', 'صب', 'صد', 'صل', 'صر', 'صو',
+  'ضا', 'ضم', 'ضع', 'ضل', 'ضر', 'ضو',
+  'طا', 'طب', 'طر', 'طل', 'طم', 'طو',
+  'عا', 'عب', 'عد', 'عل', 'عر', 'عو',
+  'غا', 'غب', 'غر', 'غل', 'غو',
+  'حا', 'حب', 'حد', 'حل', 'حر', 'حو',
+  'خا', 'خب', 'خذ', 'خل', 'خر', 'خو',
+  'وا', 'وب', 'ود', 'ول', 'ور', 'وم', 'ون', 'وي'
 ];
+
 
 function generateCombination() {
   const randomIndex = Math.floor(Math.random() * TWO_LETTER_COMBINATIONS.length);

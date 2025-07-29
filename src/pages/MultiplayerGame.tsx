@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -12,6 +12,7 @@ import '../styles/animations.css';
 import PotatoImg from './potato.png';
 
 const MultiplayerGame = () => {
+  const inputRef = useRef<HTMLInputElement>(null);
   const { socket, gameState, startGame, submitWord, leaveRoom, resetGame } = useSocket();
   const [currentWord, setCurrentWord] = useState('');
   const [wordFeedback, setWordFeedback] = useState<'success' | 'error' | null>(null);
@@ -59,7 +60,6 @@ const MultiplayerGame = () => {
 
   const handleWordSubmit = async () => {
     if (!currentWord.trim()) return;
-    
     const word = currentWord.trim();
     
     try {
@@ -73,6 +73,7 @@ const MultiplayerGame = () => {
           });
         } else {
           setWordFeedback('error');
+          inputRef.current?.focus();
           toast({
             title: "كلمة خاطئة!",
             description: `تم رفض كلمة: ${word}`,
@@ -351,6 +352,7 @@ const MultiplayerGame = () => {
           <CardContent className="space-y-4">
             <div className="flex gap-3">
               <Input
+                ref={inputRef}
                 placeholder={`اكتب كلمة تحتوي على "${gameState.currentCombination}"`}
                 value={currentWord}
                 onChange={(e) => setCurrentWord(e.target.value)}
